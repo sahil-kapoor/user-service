@@ -1,7 +1,7 @@
 package nz.westpac.user.service;
 
-import nz.westpac.user.model.User;
 import nz.westpac.user.model.Post;
+import nz.westpac.user.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,26 +35,26 @@ public class UserServiceImpl implements UserService {
   private RestTemplate restTemplate;
 
   @Override
-  public Post getPost(Integer id){
-        return restTemplate.getForObject(getUsersByIdEndpoint,Post.class,id);
+  public User getUser(Integer id){
+        return restTemplate.getForObject(getUsersByIdEndpoint,User.class,id);
    }
 
   @Override
-  public List<User> getCommentsByPostId(Integer postId){
+  public List<Post> getPostsByUserId(Integer userId){
     Map<String, Integer> uriParams = new HashMap<String, Integer>();
-    uriParams.put("id",postId);
-    UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(getComentByPostIdEndpoint);
+    uriParams.put("id",userId);
+    UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(getUsersByIdEndpoint);
     logger.debug("Request URI {}", builder.buildAndExpand(uriParams).toUri());
     URI uri= builder.buildAndExpand(uriParams).toUri();
-    ResponseEntity<List<User>> response=restTemplate.exchange(uri, HttpMethod.GET,null, new ParameterizedTypeReference<List<User>>() {});
+    ResponseEntity<List<Post>> response=restTemplate.exchange(uri, HttpMethod.GET,null, new ParameterizedTypeReference<List<Post>>() {});
     return response.getBody();
   }
 
   @Override
-  public List<Post> getPosts(){
-    UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(postsGetEndpoint);
-    ResponseEntity<List<Post>> response=restTemplate.exchange(builder.build().toUri(), HttpMethod.GET,null, new ParameterizedTypeReference<List<Post>>() {});
-    List<Post> posts=response.getBody();
+  public List<User> getUsers(){
+    UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(getUsersEndpoint);
+    ResponseEntity<List<User>> response=restTemplate.exchange(builder.build().toUri(), HttpMethod.GET,null, new ParameterizedTypeReference<List<User>>() {});
+    List<User> posts=response.getBody();
     return posts;
   }
 

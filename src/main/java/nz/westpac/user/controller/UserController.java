@@ -1,8 +1,8 @@
 package nz.westpac.user.controller;
 
 import io.swagger.annotations.Api;
-import nz.westpac.user.model.User;
 import nz.westpac.user.model.Post;
+import nz.westpac.user.model.User;
 import nz.westpac.user.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,18 +25,18 @@ public class UserController {
   @Autowired
   private UserService userService;
 
-  @GetMapping("/posts")
-  ResponseEntity<List<Post>> getPosts() {
-    return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(postService.getPosts());
+  @GetMapping("/users/{userId}")
+  ResponseEntity<User> getUserById(@PathVariable Integer userId) {
+    return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(userService.getUser(userId));
   }
 
-  @GetMapping("/posts/{id}/comments")
-  ResponseEntity<List<User>> getCommentsByPostId(@PathVariable Integer id) {
-  return ResponseEntity.ok(postService.getCommentsByPostId(id));
+  @GetMapping("/users")
+  ResponseEntity<List<User>> getUsers() {
+  return ResponseEntity.ok(userService.getUsers());
   }
 
-  @GetMapping("/posts/{id}")
-  public ResponseEntity<Post> getPostById(@PathVariable Integer id) {
-    return ResponseEntity.ok(postService.getPost(id));
+  @GetMapping("/users/{userId}/post")
+  public ResponseEntity<List<Post>> getPostByUserId(@PathVariable Integer userId) {
+    return ResponseEntity.ok(userService.getPostsByUserId(userId));
   }
 }
