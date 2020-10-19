@@ -1,0 +1,46 @@
+<configuration>
+<statusListener class="ch.qos.logback.core.status.NopStatusListener" />
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+
+        <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+            <evaluator class="ch.qos.logback.access.net.URLEvaluator">
+                <URL>/actuator/health</URL>
+            </evaluator>
+            <level>INFO</level>
+            <OnMismatch>NEUTRAL</OnMismatch>
+            <OnMatch>DENY</OnMatch>
+        </filter>
+
+        <encoder class="net.logstash.logback.encoder.AccessEventCompositeJsonEncoder">
+        <!--     <jsonGeneratorDecorator class="net.logstash.logback.decorate.PrettyPrintingJsonGeneratorDecorator"/> -->
+            <providers>
+                <timestamp>
+                    <timeZone>UTC</timeZone>
+                </timestamp>
+                <method>
+                    <fieldName>method</fieldName>
+                </method>
+                <requestedUri>
+                    <fieldName>uri</fieldName>
+                </requestedUri>
+                <statusCode>
+                    <fieldName>statusCode</fieldName>
+                </statusCode>
+                <requestHeaders>
+                    <fieldName>requestHeader</fieldName>
+                    <lowerCaseHeaderNames>false</lowerCaseHeaderNames>
+                </requestHeaders>
+                <elapsedTime>
+                    <fieldName>elapsedTime</fieldName>
+                </elapsedTime>
+                <contentLength>
+                    <fieldName>contentLength</fieldName>
+                </contentLength>
+                <remoteHost>
+                    <fieldName>remoteHost</fieldName>
+                </remoteHost>
+            </providers>
+        </encoder>
+    </appender>
+    <appender-ref ref="STDOUT" />
+</configuration>
