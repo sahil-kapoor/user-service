@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
   @Value("${get.usersById.endpoint}")
   private String getUsersByIdEndpoint;
 
-  @Value("${get.postsByUser.get.endpoint}")
+  @Value("${get.postsByUser.endpoint}")
   private String postsByUserEndpoint;
 
   @Autowired
